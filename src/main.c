@@ -18,147 +18,61 @@
 /************************************************************************/
 
 #include "asf.h"
+#include "notes.h"
 
 /************************************************************************/
 /* defines                                                              */
 /************************************************************************/
-#define NOTE_B0  31
-#define NOTE_C1  33
-#define NOTE_CS1 35
-#define NOTE_D1  37
-#define NOTE_DS1 39
-#define NOTE_E1  41
-#define NOTE_F1  44
-#define NOTE_FS1 46
-#define NOTE_G1  49
-#define NOTE_GS1 52
-#define NOTE_A1  55
-#define NOTE_AS1 58
-#define NOTE_B1  62
-#define NOTE_C2  65
-#define NOTE_CS2 69
-#define NOTE_D2  73
-#define NOTE_DS2 78
-#define NOTE_E2  82
-#define NOTE_F2  87
-#define NOTE_FS2 93
-#define NOTE_G2  98
-#define NOTE_GS2 104
-#define NOTE_A2  110
-#define NOTE_AS2 117
-#define NOTE_B2  123
-#define NOTE_C3  131
-#define NOTE_CS3 139
-#define NOTE_D3  147
-#define NOTE_DS3 156
-#define NOTE_E3  165
-#define NOTE_F3  175
-#define NOTE_FS3 185
-#define NOTE_G3  196
-#define NOTE_GS3 208
-#define NOTE_A3  220
-#define NOTE_AS3 233
-#define NOTE_B3  247
-#define NOTE_C4  262
-#define NOTE_CS4 277
-#define NOTE_D4  294
-#define NOTE_DS4 311
-#define NOTE_E4  330
-#define NOTE_F4  349
-#define NOTE_FS4 370
-#define NOTE_G4  392
-#define NOTE_GS4 415
-#define NOTE_A4  440
-#define NOTE_AS4 466
-#define NOTE_B4  494
-#define NOTE_C5  523
-#define NOTE_CS5 554
-#define NOTE_D5  587
-#define NOTE_DS5 622
-#define NOTE_E5  659
-#define NOTE_F5  698
-#define NOTE_FS5 740
-#define NOTE_G5  784
-#define NOTE_GS5 831
-#define NOTE_A5  880
-#define NOTE_AS5 932
-#define NOTE_B5  988
-#define NOTE_C6  1047
-#define NOTE_CS6 1109
-#define NOTE_D6  1175
-#define NOTE_DS6 1245
-#define NOTE_E6  1319
-#define NOTE_F6  1397
-#define NOTE_FS6 1480
-#define NOTE_G6  1568
-#define NOTE_GS6 1661
-#define NOTE_A6  1760
-#define NOTE_AS6 1865
-#define NOTE_B6  1976
-#define NOTE_C7  2093
-#define NOTE_CS7 2217
-#define NOTE_D7  2349
-#define NOTE_DS7 2489
-#define NOTE_E7  2637
-#define NOTE_F7  2794
-#define NOTE_FS7 2960
-#define NOTE_G7  3136
-#define NOTE_GS7 3322
-#define NOTE_A7  3520
-#define NOTE_AS7 3729
-#define NOTE_B7  3951
-#define NOTE_C8  4186
-#define NOTE_CS8 4435
-#define NOTE_D8  4699
-#define NOTE_DS8 4978
 
-#define BUT0_PIO           PIOA                  // periferico que controla o LED
-#define BUT0_PIO_ID        ID_PIOA                    // ID do periférico PIOC (controla LED)
-#define BUT0_PIO_IDX       11u                    // ID do LED no PIO
-#define BUT0_PIO_IDX_MASK  (1u << BUT0_PIO_IDX)  // Mascara para CONTROLARMOS o LED
+//Define os PIOs e Pinos
 
-#define BUT1_PIO           PIOD                  // periferico que controla o LED
-#define BUT1_PIO_ID        ID_PIOD                    // ID do periférico PIOC (controla LED)
-#define BUT1_PIO_IDX       28u                    // ID do LED no PIO
-#define BUT1_PIO_IDX_MASK  (1u << BUT1_PIO_IDX)  // Mascara para CONTROLARMOS o LED
+#define BUT0_PIO           PIOA                  
+#define BUT0_PIO_ID        ID_PIOA                      
+#define BUT0_PIO_IDX       11u                      
+#define BUT0_PIO_IDX_MASK  (1u << BUT0_PIO_IDX)   
 
-#define BUT2_PIO           PIOC                  // periferico que controla o LED
-#define BUT2_PIO_ID        ID_PIOC                    // ID do periférico PIOC (controla LED)
-#define BUT2_PIO_IDX       31u                    // ID do LED no PIO
-#define BUT2_PIO_IDX_MASK  (1u << BUT2_PIO_IDX)  // Mascara para CONTROLARMOS o LED
+#define BUT1_PIO           PIOD                  
+#define BUT1_PIO_ID        ID_PIOD                      
+#define BUT1_PIO_IDX       28u                      
+#define BUT1_PIO_IDX_MASK  (1u << BUT1_PIO_IDX)   
 
-#define BUT3_PIO           PIOA                  // periferico que controla o LED
-#define BUT3_PIO_ID        ID_PIOA                    // ID do periférico PIOC (controla LED)
-#define BUT3_PIO_IDX       19u                    // ID do LED no PIO
-#define BUT3_PIO_IDX_MASK  (1u << BUT3_PIO_IDX)  // Mascara para CONTROLARMOS o LED
+#define BUT2_PIO           PIOC                  
+#define BUT2_PIO_ID        ID_PIOC                      
+#define BUT2_PIO_IDX       31u                      
+#define BUT2_PIO_IDX_MASK  (1u << BUT2_PIO_IDX)   
+
+#define BUT3_PIO           PIOA                  
+#define BUT3_PIO_ID        ID_PIOA                      
+#define BUT3_PIO_IDX       19u                      
+#define BUT3_PIO_IDX_MASK  (1u << BUT3_PIO_IDX)   
 
 #define BUZZ_PIO		   PIOA
-#define BUZZ_PIO_ID        ID_PIOA                    // ID do periférico PIOC (controla LED)
-#define BUZZ_PIO_IDX       21u                    // ID do LED no PIO
-#define BUZZ_PIO_IDX_MASK  (1u << BUZZ_PIO_IDX)  // Mascara para CONTROLARMOS o LED
+#define BUZZ_PIO_ID        ID_PIOA                      
+#define BUZZ_PIO_IDX       21u                      
+#define BUZZ_PIO_IDX_MASK  (1u << BUZZ_PIO_IDX)  
 
-#define LED0_PIO           PIOC                  // periferico que controla o LED
-#define LED0_PIO_ID        12                    // ID do periférico PIOC (controla LED)
-#define LED0_PIO_IDX       8u                    // ID do LED no PIO
-#define LED0_PIO_IDX_MASK  (1u << LED0_PIO_IDX)  // Mascara para CONTROLARMOS o LED
+#define LED0_PIO           PIOC                  
+#define LED0_PIO_ID        12                      
+#define LED0_PIO_IDX       8u                      
+#define LED0_PIO_IDX_MASK  (1u << LED0_PIO_IDX)   
 
-#define LED1_PIO           PIOA                  // periferico que controla o LED
-#define LED1_PIO_ID        ID_PIOA                    // ID do periférico PIOC (controla LED)
-#define LED1_PIO_IDX       0u                    // ID do LED no PIO
-#define LED1_PIO_IDX_MASK  (1u << LED1_PIO_IDX)  // Mascara para CONTROLARMOS o LED
+#define LED1_PIO           PIOA                  
+#define LED1_PIO_ID        ID_PIOA                      
+#define LED1_PIO_IDX       0u                      
+#define LED1_PIO_IDX_MASK  (1u << LED1_PIO_IDX)   
 
-#define LED2_PIO           PIOC                  // periferico que controla o LED
-#define LED2_PIO_ID        ID_PIOC                    // ID do periférico PIOC (controla LED)
-#define LED2_PIO_IDX       30u                    // ID do LED no PIO
-#define LED2_PIO_IDX_MASK  (1u << LED2_PIO_IDX)  // Mascara para CONTROLARMOS o LED
+#define LED2_PIO           PIOC                  
+#define LED2_PIO_ID        ID_PIOC                      
+#define LED2_PIO_IDX       30u                      
+#define LED2_PIO_IDX_MASK  (1u << LED2_PIO_IDX)   
 
-#define LED3_PIO           PIOB                  // periferico que controla o LED
-#define LED3_PIO_ID        ID_PIOB                    // ID do periférico PIOC (controla LED)
-#define LED3_PIO_IDX       2u                    // ID do LED no PIO
-#define LED3_PIO_IDX_MASK  (1u << LED3_PIO_IDX)  // Mascara para CONTROLARMOS o LED
+#define LED3_PIO           PIOB                  
+#define LED3_PIO_ID        ID_PIOB                      
+#define LED3_PIO_IDX       2u                      
+#define LED3_PIO_IDX_MASK  (1u << LED3_PIO_IDX)   
 
 
-//Mario main theme melody
+//Vetores de Notas
 int melody[] = {
 	NOTE_E7, NOTE_E7, 0, NOTE_E7,
 	0, NOTE_C7, NOTE_E7, 0,
@@ -186,6 +100,8 @@ int melody[] = {
 	NOTE_D7, NOTE_B6, 0, 0
 };
 
+//LINK ORIGINAL DA MUSICA MARIO: http://www.linuxcircle.com/2013/03/31/playing-mario-bros-tune-with-arduino-and-piezo-buzzer/
+
 int megalovania[]={
 	NOTE_B6, NOTE_B6, NOTE_B7, 0, 
 	NOTE_FS6, 0, 0,NOTE_F6,
@@ -208,7 +124,7 @@ int megalovania[]={
 	0,NOTE_B6, NOTE_D6, NOTE_E6
 	
 };
-//Mario main them tempo
+//Vetores de duração de nota
 int tempo_mario[] = {
 	12, 12, 12, 12,
 	12, 12, 12, 12,
@@ -259,27 +175,10 @@ int tempo_mega[] = {
 	
 	};
 
-/************************************************************************/
-/* constants                                                            */
-/************************************************************************/
 
-/************************************************************************/
-/* variaveis globais                                                    */
-/************************************************************************/
-
-/************************************************************************/
-/* prototypes                                                           */
-/************************************************************************/
 
 void init(void);
 
-/************************************************************************/
-/* interrupcoes                                                         */
-/************************************************************************/
-
-/************************************************************************/
-/* funcoes                                                              */
-/************************************************************************/
 
 // Fun��o de inicializa��o do uC
 void init(void)
@@ -290,10 +189,14 @@ void init(void)
   // Desativa WatchDog Timer
   WDT->WDT_MR = WDT_MR_WDDIS;
 
+  //Da enable nos PIOS
+
   pmc_enable_periph_clk(BUT1_PIO_ID);
   pmc_enable_periph_clk(BUT2_PIO_ID);
   pmc_enable_periph_clk(BUT3_PIO_ID);
   pmc_enable_periph_clk(LED3_PIO_ID);
+
+  //Seta os pinos como saida ou entrada
 
   pio_set_output(BUZZ_PIO, BUZZ_PIO_IDX_MASK, 0, 0, 0);
   pio_set_output(LED0_PIO, LED0_PIO_IDX_MASK, 0, 0, 0);
@@ -307,20 +210,62 @@ void init(void)
   pio_set_input(BUT3_PIO, BUT3_PIO_IDX_MASK, PIO_PULLUP);
 }
 
-void tone(int frequency, int duration){
-	pio_clear(LED0_PIO, LED0_PIO_IDX_MASK);
+//Funções de Ligar e Desligar LEDs
+
+void led0_set() {
+	  pio_set(LED0_PIO,LED0_PIO_IDX_MASK);
+}
+
+void led0_clear() {
+	pio_clear(LED0_PIO,LED0_PIO_IDX_MASK);
+}
+
+void led1_set() {
+	pio_set(LED1_PIO,LED1_PIO_IDX_MASK);
+}
+
+void led1_clear() {
+	pio_clear(LED1_PIO,LED1_PIO_IDX_MASK);
+}
+
+void led2_set() {
+	pio_set(LED2_PIO,LED2_PIO_IDX_MASK);
+}
+
+void led2_clear() {
+	pio_clear(LED2_PIO,LED2_PIO_IDX_MASK);
+}
+
+void led3_set() {
+	pio_set(LED3_PIO,LED3_PIO_IDX_MASK);
+}
+
+void led3_clear() {
+	pio_clear(LED3_PIO,LED3_PIO_IDX_MASK);
+}
+
+//Função de Tocar nota
+
+void tone(int frequency, int duration, Pio *p_pio, const uint32_t ul_mask){
+	led0_clear();
 	int n_modules = frequency * duration/1000;
 	int delay = 1000000/(2*frequency);
 	for (int i = 0; i<n_modules; i++){
-		pio_set(BUZZ_PIO, BUZZ_PIO_IDX_MASK);
+		pio_set(p_pio, ul_mask);
 
 		delay_us(delay);
 
-		pio_clear(BUZZ_PIO, BUZZ_PIO_IDX_MASK);
+		pio_clear(p_pio, ul_mask);
 
 		delay_us(delay);
 	}
-	pio_set(LED0_PIO, LED0_PIO_IDX_MASK);
+	led0_set();
+}
+
+//Função para pegar tamanho dos vetores
+
+int getVectorSize(int *p) {
+	return sizeof(p) / sizeof(int);
 }
 /************************************************************************/
 /* Main                                                                 */
@@ -332,71 +277,79 @@ int main(void)
   init();
   int power = 0;
   int musica = 1;
-  // super loop
-  // aplicacoes embarcadas n�o devem sair do while(1).
-  pio_set(LED0_PIO,LED0_PIO_IDX_MASK);
-  pio_set(LED1_PIO,LED1_PIO_IDX_MASK);
-  pio_set(LED2_PIO,LED2_PIO_IDX_MASK);
-  pio_set(LED3_PIO,LED3_PIO_IDX_MASK);
+  float speed = 1.3;
+  
+  led0_set();
+  led1_set();
+  led2_set();
+  led3_set();
   while (1)
   {
+	
+	//Botao de Power
 	if(!pio_get(BUT0_PIO,PIO_INPUT,BUT0_PIO_IDX_MASK)){
-		pio_set(LED0_PIO, LED0_PIO_IDX_MASK);
-		pio_set(LED1_PIO,LED1_PIO_IDX_MASK);
-		pio_set(LED2_PIO,LED2_PIO_IDX_MASK);
+		led0_set();
+		led1_set();
+		led2_set();
 		power = !power;
 		delay_ms(500);
 	}
 	if(power == 1){
-		pio_clear(LED0_PIO,LED0_PIO_IDX_MASK);
+		led0_clear();
 		if(musica == 1){
-			pio_clear(LED1_PIO, LED1_PIO_IDX_MASK);
+			led1_clear();
 		}
+
+		//Selecao de Musica
 		if(!pio_get(BUT1_PIO,PIO_INPUT,BUT1_PIO_IDX_MASK)){
-			pio_set(LED2_PIO,LED2_PIO_IDX_MASK);
-			pio_clear(LED1_PIO,LED1_PIO_IDX_MASK);
+			led2_set();
+			led1_clear();
 			musica = 1;
 		}
 		if(!pio_get(BUT2_PIO,PIO_INPUT,BUT2_PIO_IDX_MASK)){
-			pio_set(LED1_PIO,LED1_PIO_IDX_MASK);
-			pio_clear(LED2_PIO,LED2_PIO_IDX_MASK);
+			led1_set();
+			led2_clear();
 			musica = 2;
 		}
+
+		//Botao de Play
 		if(!pio_get(BUT3_PIO,PIO_INPUT,BUT3_PIO_IDX_MASK)){
-			pio_clear(LED3_PIO, LED3_PIO_IDX_MASK);
+			led3_clear();
 			delay_ms(500);
 			if(musica == 1){
-				int size = sizeof(megalovania) / sizeof(int);
+				int size = getVectorSize(megalovania);
+
+				//Loop de notas
 				for (int thisNote = 0; thisNote < size; thisNote++) {
 					int noteDuration = 500 / tempo_mega[thisNote];
-					tone(megalovania[thisNote], noteDuration);
-					int pauseBetweenNotes = noteDuration * 1.30;
+					tone(megalovania[thisNote], noteDuration, BUZZ_PIO, BUZZ_PIO_IDX_MASK);
+					int pauseBetweenNotes = noteDuration * speed;
 					delay_ms(pauseBetweenNotes);
-					tone(0, noteDuration);
+					tone(0, noteDuration, BUZZ_PIO, BUZZ_PIO_IDX_MASK);
 					if(!pio_get(BUT3_PIO,PIO_INPUT,BUT3_PIO_IDX_MASK)){
-						pio_set(LED3_PIO, LED3_PIO_IDX_MASK);
+						led3_set();
 						delay_ms(500);
 						break;
 					}
 					
 				}
-				pio_set(LED3_PIO, LED3_PIO_IDX_MASK);
+				led3_set();
 			}
 			if(musica == 2){
-				int size = sizeof(melody) / sizeof(int);
+				int size = getVectorSize(melody);
 				for (int thisNote = 0; thisNote < size; thisNote++) {
 					int noteDuration = 1000 / tempo_mario[thisNote];
-					tone(melody[thisNote], noteDuration);
-					int pauseBetweenNotes = noteDuration * 1.30;
+					tone(melody[thisNote], noteDuration, BUZZ_PIO, BUZZ_PIO_IDX_MASK);
+					int pauseBetweenNotes = noteDuration * speed;
 					delay_ms(pauseBetweenNotes);
-					tone(0, noteDuration);
+					tone(0, noteDuration, BUZZ_PIO, BUZZ_PIO_IDX_MASK);
 					if(!pio_get(BUT3_PIO,PIO_INPUT,BUT3_PIO_IDX_MASK)){
-						pio_set(LED3_PIO, LED3_PIO_IDX_MASK);
+						led3_set();
 						delay_ms(500);
 						break;
 					}
 				}
-				pio_set(LED3_PIO, LED3_PIO_IDX_MASK);
+				led3_set();
 			}
 		}
 	}
